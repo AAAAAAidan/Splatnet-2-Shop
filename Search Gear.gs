@@ -24,11 +24,20 @@ function SearchGear()
   // Email information.
   var emailAddress = 'a.k.zamboni@gmail.com';
   var subject = 'SplatNet 2 Shop Update';
-  var message = 'The following gear has been found in the SplatNet 2 shop: \n - ' + matchingGear.toString().replace(/,/g, '\n - ');
+  var message = 'The following gear has been found in the SplatNet 2 shop:\n - ' + matchingGear.toString().replace(/,/g, '\n - ');
   
   // Sends an email if matching gear has been found.
   if (matchingGear.length > 0)
+  {
     MailApp.sendEmail(emailAddress, subject, message);
+    Logger.log("Email successfully sent. " + message)
+    console.log("Email successfully sent. " + message)
+  }
+  else
+  {
+    Logger.log("No wanted gear was found.")
+    console.log("No wanted gear was found.")
+  }
 }
 
 
@@ -47,20 +56,20 @@ function GetCurrentGear()
   
   for (var x = 1; x <= 6; x++)
   {
+    //Logger.log("Row " + row + ": " + values[row][0]);
     gear.push(values[row][0]);
-    Logger.log("Row " + row + ": " + values[row][0]);
     row += 7;
   }
   
-  Logger.log("Gear: " + gear);
-  console.log("Gear: " + gear);
+  Logger.log("Gear in shop: " + gear);
+  console.log("Gear in shop: " + gear);
   
   return gear;
 }
 
 
 
-// Set the function to activate every two hours.
+// Set the function to activate every four hours.
 function SearchGearTrigger()
 {
   ScriptApp.newTrigger('SearchGear')
