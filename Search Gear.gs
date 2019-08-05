@@ -6,9 +6,10 @@ var sheetName = 'Splatoon Wiki Main Page';
 // If there is, an email displaying the name of the gear is sent.
 function SearchGear()
 {
-  var gear = GetCurrentGear();
+  var gear = GetCurrentGear('gear');
+  var abilities = GetCurrentGear('abilities');
   var matchingGear = [];
-  var wantedGear = ['Hightide Era Band Tee', 'Squidstar Waistcoat', 'Moist Ghillie Suit', 
+  var wantedGear = ['Hightide Era Band Tee', 'Squidstar Waistcoat', 'Moist Ghillie Suit', 'ω-3 Tee',
                     'Double Egg Shades',     'Blowfish Newsie',     'Fake Contacts',
                     'Black Flip-Flops ',     'Old-Timey Shoes'];
   
@@ -17,10 +18,10 @@ function SearchGear()
     for (var x in gear)
     {
       if (wantedGear[y] == gear[x])
-        matchingGear.push(wantedGear[y]);
+        matchingGear.push(wantedGear[y] + " (" + abilities[x] + ")");
     }
   }
-  
+
   // Email information.
   var emailAddress = 'a.k.zamboni@gmail.com';
   var subject = 'SplatNet 2 Shop Update';
@@ -43,7 +44,7 @@ function SearchGear()
 
 
 //Read the current gear from the XML retrieved from the wiki.
-function GetCurrentGear()
+function GetCurrentGear(type)
 {
   var spreadsheet = SpreadsheetApp.openById(sheetID);
   var sheet = spreadsheet.getSheetByName(sheetName);
@@ -54,6 +55,9 @@ function GetCurrentGear()
   var cont = true;
   var gear = [];
   
+  if (type == 'abilities')
+    row += 5;
+  
   for (var x = 1; x <= 6; x++)
   {
     //Logger.log("Row " + row + ": " + values[row][0]);
@@ -61,19 +65,22 @@ function GetCurrentGear()
     row += 7;
   }
   
-  Logger.log("Gear in shop: " + gear);
-  console.log("Gear in shop: " + gear);
+  if (type == 'gear')
+  {
+    Logger.log("Gear in shop: " + gear.toString().replace(/,/g, ", "));
+    console.log("Gear in shop: " + gear.toString().replace(/,/g, ", "));
+  }
   
   return gear;
 }
 
 
 
-// Set the function to activate every four hours.
+// Set the function to activate every six hours.
 function SearchGearTrigger()
 {
   ScriptApp.newTrigger('SearchGear')
   .timeBased()
-  .everyHours(4)
+  .everyHours(6)
   .create();
 }
