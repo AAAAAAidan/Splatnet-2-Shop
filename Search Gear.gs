@@ -51,7 +51,7 @@ function GetCurrentGear(type)
   var data = sheet.getDataRange();
   var values = data.getValues();
   
-  var row = 65;
+  var row = 66;
   var cont = true;
   var gear = [];
   
