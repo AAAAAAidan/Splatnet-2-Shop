@@ -1,10 +1,8 @@
-// Spreadsheet information.
-var sheetID = '138ruVmHKZCS6nBFj4qjB2uLP99E0F89F41b6O64fG0o';
-var sheetName = 'Splatoon Wiki Main Page';
+var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
 // Check if any of the gear in the shop is gear you currently want.
 // If there is, an email displaying the name of the gear is sent.
-function SearchGear()
+function searchGear()
 {
   var gear = GetCurrentGear('gear');
   var abilities = GetCurrentGear('abilities');
@@ -13,6 +11,7 @@ function SearchGear()
                     'Double Egg Shades',     'Blowfish Newsie',     'Fake Contacts',
                     'Black Flip-Flops ',     'Old-Timey Shoes'];
   
+  // Check if the current gear matches any wanted gear.
   for (var y in wantedGear)
   {
     for (var x in gear)
@@ -22,14 +21,13 @@ function SearchGear()
     }
   }
 
-  // Email information.
-  var emailAddress = 'a.k.zamboni@gmail.com';
-  var subject = 'SplatNet 2 Shop Update';
-  var message = 'The following gear has been found in the SplatNet 2 shop:\n - ' + matchingGear.toString().replace(/,/g, '\n - ');
-  
   // Sends an email if matching gear has been found.
   if (matchingGear.length > 0)
   {
+    var emailAddress = 'a.k.zamboni@gmail.com';
+    var subject = 'SplatNet 2 Shop Update';
+    var message = 'The following gear has been found in the SplatNet 2 shop:\n - ' + matchingGear.toString().replace(/,/g, '\n - ');
+    
     MailApp.sendEmail(emailAddress, subject, message);
     Logger.log("Email successfully sent. " + message)
     console.log("Email successfully sent. " + message)
@@ -43,32 +41,35 @@ function SearchGear()
 
 
 
-//Read the current gear from the XML retrieved from the wiki.
-function GetCurrentGear(type)
+// Retrieve the current gear from the XML retrieved from the wiki.
+function getCurrentGear(type)
 {
-  var spreadsheet = SpreadsheetApp.openById(sheetID);
-  var sheet = spreadsheet.getSheetByName(sheetName);
-  var data = sheet.getDataRange();
-  var values = data.getValues();
-  
-  var row = 66;
-  var cont = true;
   var gear = [];
   
-  if (type == 'abilities')
-    row += 5;
-  
-  for (var x = 1; x <= 6; x++)
+  for (var row = 60; row <= 70; row++)
   {
-    //Logger.log("Row " + row + ": " + values[row][0]);
-    gear.push(values[row][0]);
-    row += 7;
+    if (sheet.getRange(row, 1).getValue() == "SplatNet 2")
+    {
+      row++;
+      if (type == 'abilities')
+        row += 5;
+      
+      for (var x = 1; x <= 6; x++)
+      {
+        gear.push(sheet.getRange(row, 1).getValue());
+        row += 7;
+      }
+    }
   }
   
   if (type == 'gear')
   {
     Logger.log("Gear in shop: " + gear.toString().replace(/,/g, ", "));
     console.log("Gear in shop: " + gear.toString().replace(/,/g, ", "));
+  } else
+  {
+    Logger.log("Abilities in shop: " + gear.toString().replace(/,/g, ", "));
+    console.log("Abilities in shop: " + gear.toString().replace(/,/g, ", "));
   }
   
   return gear;
@@ -77,7 +78,7 @@ function GetCurrentGear(type)
 
 
 // Set the function to activate every six hours.
-function SearchGearTrigger()
+function searchGearTrigger()
 {
   ScriptApp.newTrigger('SearchGear')
   .timeBased()
