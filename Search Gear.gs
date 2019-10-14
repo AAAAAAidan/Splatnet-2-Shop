@@ -4,8 +4,8 @@ var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 // If there is, an email displaying the name of the gear is sent.
 function searchGear()
 {
-  var gear = GetCurrentGear('gear');
-  var abilities = GetCurrentGear('abilities');
+  var gear = getCurrentGear('gear');
+  var abilities = getCurrentGear('abilities');
   var matchingGear = [];
   var wantedGear = ['Hightide Era Band Tee', 'Squidstar Waistcoat', 'Moist Ghillie Suit', 'ω-3 Tee',
                     'Double Egg Shades',     'Blowfish Newsie',     'Fake Contacts',
@@ -80,7 +80,7 @@ function getCurrentGear(type)
 // Set the function to activate every six hours.
 function searchGearTrigger()
 {
-  ScriptApp.newTrigger('SearchGear')
+  ScriptApp.newTrigger('searchGear')
   .timeBased()
   .everyHours(6)
   .create();
