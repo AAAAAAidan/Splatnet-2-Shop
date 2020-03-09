@@ -29,13 +29,11 @@ function searchGear()
     var message = 'The following gear has been found in the SplatNet 2 shop:\n - ' + matchingGear.toString().replace(/,/g, '\n - ');
     
     MailApp.sendEmail(emailAddress, subject, message);
-    Logger.log("Email successfully sent. " + message)
-    console.log("Email successfully sent. " + message)
+    Logger.log("Email successfully sent. " + message);
   }
   else
   {
-    Logger.log("No wanted gear was found.")
-    console.log("No wanted gear was found.")
+    Logger.log("No wanted gear was found.");
   }
 }
 
@@ -63,14 +61,9 @@ function getCurrentGear(type)
   }
   
   if (type == 'gear')
-  {
     Logger.log("Gear in shop: " + gear.toString().replace(/,/g, ", "));
-    console.log("Gear in shop: " + gear.toString().replace(/,/g, ", "));
-  } else
-  {
+  else
     Logger.log("Abilities in shop: " + gear.toString().replace(/,/g, ", "));
-    console.log("Abilities in shop: " + gear.toString().replace(/,/g, ", "));
-  }
   
   return gear;
 }
