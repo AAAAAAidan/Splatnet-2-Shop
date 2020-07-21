@@ -1,4 +1,4 @@
-# Search Splatnet 2 Shop
+# Splatnet 2 Shop Search
 
 A Google Script project that retrieves the current shop's available gear and sends an email if specified gear is found.
 
