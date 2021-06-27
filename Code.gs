@@ -1,4 +1,4 @@
-var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+var sheet = SpreadsheetApp.openById("138ruVmHKZCS6nBFj4qjB2uLP99E0F89F41b6O64fG0o").getActiveSheet();
 
 // Check if any of the gear in the shop is gear you currently want.
 // If there is, an email displaying the name of the gear is sent.
